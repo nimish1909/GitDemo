@@ -1,0 +1,3 @@
+//table[@class='secondLevel firstActive ']/tbody/tr/td[8]/nobr/a
+//a[contains(text(),'Licenses')]
+//a[@href='/administration/licensing/manage_licenses.do']

@@ -1,0 +1,306 @@
+                                                        TEST-CASES
+                                                    1.Handling Alert popup
+1)Open the browser and enter test url("http://localhost/login.do")into the address bar and press the enter button,acti-TIME login page should display.
+
+2)Enter valid data i.e user name-(admin)password -(manager)into the username and password textfield and click on login button,
+acti-TIME Enter Time-Track page should display.
+
+3)Click on Setting button,6 Relevant objects are display i.e.
+a)Turn feauture on/off
+b) General Settings
+c)Types Of Work
+d)Work Schedule
+e)Logo&colour Scheme
+f)Licenses.
+
+4)Click on Logo&colour Scheme.
+5)Select on use Custom and logo radio button.
+6)Click on save button,("Alert Popup will appear under the address bar in between the page with the text "Please select logo image for actiTIME 
+  interfaces or use default actiTIME logo". 
+7)Click on OK button on Alert popup.
+
+Expected result:-Alert Popup will be accepted and Logo & scheme page will dislpay
+
+package PopUp;
+
+import java.util.concurrent.TimeUnit;
+
+import org.openqa.selenium.Alert;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriver.TargetLocator;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+public class HandlingAlertPopUp {
+	static
+	{
+		System.setProperty("webdriver.chrome.driver","./driver/chromedriver.exe");
+	}
+
+	public static void main(String[] args) {
+		WebDriver driver=new ChromeDriver();
+		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		driver.manage().window().maximize();
+		driver.get("http://localhost/login.do;jsessionid=36s0ar1aan4e7");
+		driver.findElement(By.id("username")).sendKeys("admin");
+		driver.findElement(By.name("pwd")).sendKeys("manager");
+		driver.findElement(By.xpath("//div[text()='Login ']")).click();
+		WebDriverWait wait=new WebDriverWait(driver, 10);
+		wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//div[contains(text(),'Settings')][1]")));
+		driver.findElement(By.xpath("//div[contains(text(),'Settings')][1]")).click();
+		driver.findElement(By.xpath("//a[text()='Logo & Color Scheme']")).click();
+		driver.findElement(By.id("uploadNewLogoOption")).click();
+		driver.findElement(By.id("FormModifiedDivButton")).click();
+		//we can handle popup in two ways
+		//First way-->(we can use accept or dismiss any one)
+		
+		//TargetLocator s = driver.switchTo();
+		//Alert al = s.alert();
+		//String alerttext = al.getText();
+		//System.out.println(alerttext);
+		//al.dismiss();
+		
+		//or second way-->(we can use accept or dismiss any one)
+		String s = driver.switchTo().alert().getText();
+		System.out.println(s);
+		driver.switchTo().alert().accept();
+		}
+              }
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                                                      2.Handling Child Browser popup
+
+1)Open the browser.
+2)Enter test url("http://www.naukri.com")and press the enter button,and naukri.com homepage should display with three child of browser.
+3)Click on cancel symbol of all the three Child browser popups.
+
+Expected result:-Home page will display and all the tabs will be closed.
+
+package PopUp;
+
+import java.util.Set;
+import java.util.concurrent.TimeUnit;
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+
+public class HndlingWindowOrChildBrowserPopUP {
+	static
+	{
+		System.setProperty("webdriver.chrome.driver","./driver/chromedriver.exe");
+	}
+
+	public static void main(String[] args) {
+		ChromeOptions opt = new ChromeOptions();
+		opt.addArguments("--disable-notifications");
+		WebDriver driver=new ChromeDriver(opt);
+		driver.manage().timeouts().implicitlyWait(10,TimeUnit.SECONDS);
+		driver.manage().window().maximize();
+		driver.get("http://www.naukri.com");
+		String pw = driver.getWindowHandle();
+		Set<String> whs = driver.getWindowHandles();
+		int count = whs.size();
+		System.out.println(count);
+		for(String w:whs)
+		{
+			driver.switchTo().window(w);
+			driver.close();
+		}
+     }
+     }
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                                              3)Handling Notification popup
+1)open the browser.
+2)Enter the url "http://www.myntra.com" into the address bar and click on enter button,myntra.com home page should display with the notification under address bar at the top left corner with Allow or Block Option.
+3)Disable the notification popup.
+
+Expected result:-Myntra home page will dispaly without notification popup.
+
+package PopUp;
+
+import java.util.concurrent.TimeUnit;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+
+public class HndlingNotifictionsPopUp {
+	static
+	{
+		System.setProperty("webdriver.chrome.driver","./driver/chromedriver.exe");
+	}
+
+	public static void main(String[] args) {
+		ChromeOptions opt = new ChromeOptions();
+		opt.addArguments("--disable-notifications");
+		WebDriver driver=new ChromeDriver(opt);
+		driver.manage().timeouts().implicitlyWait(10,TimeUnit.SECONDS);
+		driver.manage().window().maximize();
+		driver.get("http://www.myntra.com");
+}
+}
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                                                         4)Handling File Upload PopUp
+1)Open the browser.
+2)Enter test url("http://localhost/login.do")into the address bar and press the enter button,acti-TIME login page should display.
+3)Click on actiTIMEinc Link,acti-Time tracking software for boosting your business page should display.
+4)Mouse Hover to the Help Center menu icon.Folling options should display
+FAQ,AdminGuide,User Guide,Request a demo,Contact Support.
+5)Click on the Contact support,Contact actiTIME Support page should display.
+6)Scroll the page till Question textbox.
+7)click on Attach file button,file upload option should dispaly.
+8)select and upload the File.
+
+Expected result:-File should be uploaded into the Attach file.
+
+package PopUp;
+
+import java.util.Set;
+import java.util.concurrent.TimeUnit;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
+
+public class FileUploadPopup {
+	static
+	{
+		System.setProperty("webdriver.chrome.driver","./driver/chromedriver.exe");
+	}
+
+	public static void main(String[] args) {
+		WebDriver driver=new ChromeDriver();
+		driver.manage().timeouts().implicitlyWait(10,TimeUnit.SECONDS);
+		driver.manage().window().maximize();
+		driver.get("http://localhost/login.do;jsessionid=3cg95k0e6v7sq");
+		//driver.findElement(By.id("username")).sendKeys("admin");
+		//driver.findElement(By.name("pwd")).sendKeys("manager");
+		//driver.findElement(By.xpath("//div[text()='Login '] ")).click();
+		WebElement linkText = driver.findElement(By.xpath("//a[@target='_blank']"));
+		linkText.click();
+		String pw = driver.getWindowHandle();
+		Set<String> tabs = driver.getWindowHandles();
+		int count = tabs.size();
+		System.out.println(count);
+		for(String tab:tabs)
+		{
+			driver.switchTo().window(tab);
+			if(pw.equals(tab))
+			{
+				String pTabTitle = driver.getTitle();
+				System.out.println("parent tab title is-->"+pTabTitle);
+			}
+			else
+			{
+				String cTabTitle = driver.getTitle();
+				System.out.println("child tab title is-->"+cTabTitle);
+				WebElement hlpCen = driver.findElement(By.xpath("//a[text()='Help Center']"));
+				Actions act = new Actions(driver);
+				act.moveToElement(hlpCen).perform();
+				 WebElement cont = driver.findElement(By.xpath("//a[text()='Contact Support']"));
+			     cont.click();
+			     int yaxis = driver.findElement(By.xpath("//label[text()='Question']")).getLocation().getY();
+			     JavascriptExecutor jse = (JavascriptExecutor)driver;
+			     jse.executeScript("window.scrollTo(0,"+yaxis+")");
+			     String filepath = "C:\\Users\\Nimish Jain\\Desktop\\NIMISH JAIN.docx";
+			driver.findElement(By.id("fileupload")).sendKeys(filepath);
+			}				
+		}
+	}
+}
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                                                             5)Handling File Download Popup
+1)Open the browser.
+2)Enter test url("https://selenium.dev/")into the address bar and press the enter button,SeleniumHQ page should display.
+3)Click on download Tab,Download page should display.
+4)Scroll the page till Selenium Client & WebDriver Language Bindings text.
+5)Click on download link for java,Download Popup with two radio button i.e. Openwith and Save File and with two button i.e. Ok and Cancel Popup should display.
+6)Select a Save File radio button and click on Ok button.
+ 
+Expected result:-File should be downloaded and displayed into the download section.
+
+package PopUp;
+
+import java.awt.AWTException;
+import java.awt.Robot;
+import java.awt.event.KeyEvent;
+import java.util.concurrent.TimeUnit;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+
+public class HandlingFileDownloadPopup {
+	static
+	{
+		//here we use only firefox browser because popup will come only firefox when we click on download
+		//System.setProperty("webdriver.chrome.driver","./driver/chromedriver.exe");
+		System.setProperty("webdriver.gecko.driver","./driver/geckodriver.exe");
+	}
+	public static void main(String[] args) throws AWTException {
+		WebDriver driver=new FirefoxDriver();
+		driver.manage().timeouts().implicitlyWait(10,TimeUnit.SECONDS);
+		driver.manage().window().maximize();
+		driver.get("https://selenium.dev/");
+		driver.findElement(By.xpath("//a[text()='Downloads']")).click();
+		int yaxis = driver.findElement(By.xpath("//h2[text()='Selenium Client & WebDriver Language Bindings']")).getLocation().getY();
+		JavascriptExecutor jse = (JavascriptExecutor)driver;
+		jse.executeScript("window.scrollTo(0,"+yaxis+")");
+		driver.findElement(By.xpath("//td[text()='Java']/ancestor::tr/descendant::a[text()='Download']")).click();
+		
+		Robot rbt = new Robot();
+		rbt.keyPress(KeyEvent.VK_DOWN);
+		rbt.keyPress(KeyEvent.VK_ENTER);		
+}		
+}
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                                                              6) Handling Hidden Division Popup
+1)Open the browser
+2)Enter the url("https://www.flipkart.com/") into the address bar and click Enter button,
+Hideen division popup should display with(Enter email/Mobile number,Enter password,Forgot?,Login or Request OTP,New to Flipkart?Create an account)and cancel symbol.
+3)Click on cancel Symbol.
+ 
+Expected Result:-Flipkart home page should display without Hidden Division Popup.
+
+
+package PopUp;
+
+import java.util.concurrent.TimeUnit;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+public class HandlingHiddenDivision {
+	static
+	{
+		System.setProperty("webdriver.chrome.driver","./driver/chromedriver.exe");
+	}
+
+	public static void main(String[] args) {
+		WebDriver driver=new ChromeDriver();
+		driver.manage().timeouts().implicitlyWait(10,TimeUnit.SECONDS);
+		driver.manage().window().maximize();
+		driver.get("https://www.flipkart.com/");
+		driver.findElement(By.xpath("//input[@class='_2zrpKA _1dBPDZ']")).sendKeys("Nimish");
+		driver.findElement(By.xpath("//button[text()='?']"));	
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
